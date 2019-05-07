@@ -12,6 +12,8 @@ function App() {
 
   const [timer, setTimer] = useState(0);
 
+  const [isValid, setIsValid] = useState([]);
+
   const refreshTxt = () => {
     const API = `https://baconipsum.com/api/?type=meat-and-filler&paras=5`;
     fetch(API)
@@ -24,7 +26,7 @@ function App() {
         // if(newTxt.length<400){
         //   newTxt.concat(data[1])
         // }
-        console.log(newTxt.length);
+
         setIsCounting(false);
         setTxt(newTxt);
         setValue("");
@@ -49,10 +51,27 @@ function App() {
     }
   }, [isCounting]);
 
-  useEffect(() => console.log(timer), [timer]);
+  useEffect(() => {
+    const comparingTxt = txt.slice(0, value.length).split(" ");
+    console.log(comparingTxt);
+
+    const userTxt = value.slice(0, value.length).split(" ");
+    const newIsValid = [];
+    comparingTxt.forEach((txt, index) => {
+      if (txt === userTxt[index]) newIsValid[index] = true;
+      else {
+        newIsValid[index] = false;
+      }
+    });
+    console.log(isValid);
+    setIsValid(newIsValid);
+  }, [value]);
 
   return (
-    <div className="App">
+    <div
+      className="App"
+      onClick={timer !== 0 ? () => setIsCounting(false) : null}
+    >
       lorem ipsum typing game
       <GameField
         txt={txt}
@@ -60,6 +79,8 @@ function App() {
         value={value}
         onChange={onInputChange}
         isCounting={isCounting}
+        timer={timer}
+        isValid={isValid}
       />
     </div>
   );
