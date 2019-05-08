@@ -1,6 +1,5 @@
 import React from "react";
 import Styled from "styled-components";
-import "../styles/GameField.scss";
 
 const Txt = Styled.p`
   border:2px solid orange;
@@ -31,6 +30,12 @@ z-index:1;
   z-index:-2;
   ${props =>
     props.green ? "background-color:#009432" : "background-color:red"}
+      ${props =>
+        props.green === "typing"
+          ? "background-color:orange"
+          : props.green
+          ? "background-color:#009432"
+          : "background-color:red"}
   ${props => (props.not ? "background-color:white" : "")}
 }
 
@@ -38,18 +43,22 @@ z-index:1;
 `;
 
 const GameField = props => {
-  console.log(props.txt.split(" "));
-  console.log(props.txt);
+  const wordsArray = props.txt.split(" ");
+
+  const timeSeconds = Math.floor(props.timer / 1000);
+  const timeMiliSeconds = props.timer % 1000;
+
   return (
     <section className="GameField">
       <Txt className="GameField__txt">
-        {props.txt.split(" ").map((word, index) => (
+        {wordsArray.map((word, index) => (
           <>
             <Word
               data-text={word}
               green={props.isValid[index]}
               not={props.isValid[index] === undefined}
-            />{" "}
+            />
+            {!(index === wordsArray.length - 1) ? " " : "."}
           </>
         ))}
       </Txt>
@@ -59,9 +68,16 @@ const GameField = props => {
         cols="30"
         rows="10"
         placeholder="When you start typing the time also starts"
-        onChange={props.onChange}
+        onChange={props.isCompleted ? null : props.onChange}
       />
       <button onClick={props.refreshTxt}>Regenerate text</button>
+      <h1>
+        {!props.isCounting && props.isCompleted
+          ? `${timeSeconds},${timeMiliSeconds}s`
+          : props.isCounting
+          ? "time is counting"
+          : null}
+      </h1>
     </section>
   );
 };
