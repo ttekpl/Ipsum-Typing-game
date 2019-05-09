@@ -2,10 +2,14 @@ import React from "react";
 import Styled from "styled-components";
 
 const Txt = Styled.p`
-  border:2px solid orange;
-  height: auto;
-  width: 500px;
+  background-color:#383838;
+  height: 150px;
+  width: 100%;
   padding:20px;
+  margin-bottom:20px;
+  font-family: 'Raleway', sans-serif;
+
+  border:none;
 
 `;
 
@@ -49,8 +53,8 @@ const GameField = props => {
   const timeMiliSeconds = props.timer % 1000;
 
   return (
-    <section className="GameField">
-      <Txt className="GameField__txt">
+    <>
+      <Txt>
         {wordsArray.map((word, index) => (
           <>
             <Word
@@ -62,7 +66,8 @@ const GameField = props => {
           </>
         ))}
       </Txt>
-      <textarea
+      <Txt
+        as="textarea"
         name=""
         id=""
         cols="30"
@@ -78,7 +83,7 @@ const GameField = props => {
           ? "time is counting"
           : null}
       </h1>
-    </section>
+    </>
   );
 };
 

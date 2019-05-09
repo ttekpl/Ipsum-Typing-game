@@ -7,16 +7,73 @@ import Nav from "./layout/Nav";
 import Styled, { createGlobalStyle } from "styled-components";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-const Wrap = Styled.main`
-height:100vh;
+const Content = Styled.main`
+height:100%;
 width:100%;
-display:flex;
+background-color:#1E1E1E;
+padding:20px;
+padding-top:70px;
+
 `;
 
-const Content = Styled(Switch)`
-width:70%;
-height:100%;
+const Header = Styled.header`
+position:absolute;
+top:0;
+left:0;
+height:60px;
+width:100%;
+background-color:#333333;
+`;
 
+const WrapHamburger = Styled.div`
+position:absolute;
+left:0;
+top:0;
+height:60px;
+width:60px;
+z-index:999;
+`;
+
+const HamburgerMenu = Styled.div`
+position:absolute;
+height:2px;
+width:40px;
+left:10px;
+top:50%;
+transform:translateY(-100%);
+background-color:#aaa;
+transition:.3s;
+${props =>
+  props.isActive
+    ? " background-color:rgba(170, 170, 170, 0);"
+    : " background-color:rgba(170, 170, 170, 1);"}
+
+&::after{
+  content:'';
+  position:absolute;
+  top:calc(-10px * 1.41);
+  left:0;
+  height:100%;
+  width:100%;
+ transform-origin:0% center;
+ transition:.3s;
+ transform:${props => (props.isActive ? "rotate(45deg)" : "rotate(0)")};
+ background-color:#aaa;
+}
+
+
+&::before{
+  content:'';
+  position:absolute;
+  transform-origin:0% center;
+  top:calc(10px * 1.41);
+  left:0;
+  height:100%;
+  width:100%;
+ background-color:#aaa;
+ transition:.3s;
+ transform:${props => (props.isActive ? "rotate(-45deg)" : "rotate(0)")};
+}
 `;
 
 const GlobalStyles = createGlobalStyle`
@@ -24,6 +81,17 @@ const GlobalStyles = createGlobalStyle`
   margin:0;
   padding:0;
   box-sizing:border-box;
+}
+body{
+  width:100vw;
+  font-family: 'Raleway', sans-serif;
+
+}
+div.App{
+  height:100vh;
+width:100%;
+background-color:#1E1E1E;
+
 }
 `;
 
@@ -41,6 +109,8 @@ function App() {
   const [isCompleted, setIsCompleted] = useState(false);
 
   const [records, setRecords] = useState([]);
+
+  const [isMenuActive, setIsMenuActive] = useState(false);
 
   const refreshTxt = () => {
     console.log(records);
@@ -125,9 +195,14 @@ function App() {
         className="App"
         onClick={timer !== 0 ? () => setIsCounting(false) : null}
       >
-        <Wrap>
-          <Nav />
-          <Content>
+        <Header>
+          <WrapHamburger onClick={() => setIsMenuActive(!isMenuActive)}>
+            <HamburgerMenu isActive={isMenuActive} />
+          </WrapHamburger>
+        </Header>
+        <Nav isActive={isMenuActive} />
+        <Content>
+          <Switch>
             <Route
               exact
               path="/"
@@ -147,8 +222,8 @@ function App() {
             <Route path="/Rules" component={Rules} />
             <Route path="/Laderboards" component={Laderboards} />
             <Route path="/Contact" component={Contact} />
-          </Content>
-        </Wrap>
+          </Switch>
+        </Content>
       </div>
     </Router>
   );
