@@ -102,6 +102,7 @@ const GameField = props => {
         rows="10"
         placeholder="When you start typing the time also starts"
         onChange={props.isCompleted ? null : props.onChange}
+        value={props.value}
       />
       <Stats>
         <StatH1>Stats</StatH1>

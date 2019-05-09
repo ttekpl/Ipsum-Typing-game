@@ -36,9 +36,8 @@ color:#aaa;
 text-transform:uppercase;
 text-decoration:none;
 border-bottom:3px solid #333;
-/* &:hover{
-  background-color:royalblue;
-} */
+outline:none;
+
 `;
 
 const Nav = props => {

@@ -85,7 +85,7 @@ const GlobalStyles = createGlobalStyle`
 body{
   width:100vw;
   font-family: 'Raleway', sans-serif;
-
+  color:#aaa;
 }
 div.App{
   height:100vh;
@@ -113,7 +113,6 @@ function App() {
   const [isMenuActive, setIsMenuActive] = useState(false);
 
   const refreshTxt = () => {
-    console.log(records);
     const API = `https://baconipsum.com/api/?type=meat-and-filler&paras=5`;
     fetch(API)
       .then(response => {
@@ -128,13 +127,13 @@ function App() {
 
         setIsCounting(false);
         setTxt(newTxt);
-        setValue("");
         setIsCompleted(false);
         setIsValid([]);
       })
       .catch(err => {
         console.log(err);
       });
+    setValue("");
   };
 
   const onInputChange = e => {
@@ -193,7 +192,7 @@ function App() {
       <GlobalStyles />
       <div
         className="App"
-        onClick={timer !== 0 ? () => setIsCounting(false) : null}
+        // onClick={timer !== 0 ? () => setIsCounting(false) : null}
       >
         <Header>
           <WrapHamburger onClick={() => setIsMenuActive(!isMenuActive)}>
@@ -220,7 +219,10 @@ function App() {
               )}
             />
             <Route path="/Rules" component={Rules} />
-            <Route path="/Laderboards" component={Laderboards} />
+            <Route
+              path="/Laderboards"
+              render={() => <Laderboards records={records} />}
+            />
             <Route path="/Contact" component={Contact} />
           </Switch>
         </Content>
