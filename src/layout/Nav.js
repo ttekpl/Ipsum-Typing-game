@@ -19,6 +19,8 @@ const ItemsList = Styled.ul`
 height:60%;
 display:flex;
 flex-direction:column;
+list-style:none;
+margin-top:60px;
 
 `;
 
@@ -30,15 +32,19 @@ display:flex;
 justify-content:center;
 align-items:center;
 transition:.2s;
-&:hover{
+color:#aaa;
+text-transform:uppercase;
+text-decoration:none;
+border-bottom:3px solid #333;
+/* &:hover{
   background-color:royalblue;
-}
+} */
 `;
 
 const Nav = props => {
   return (
     <Menu isActive={props.isActive}>
-      <ul>
+      <ItemsList>
         <li>
           <MenuItem to="/" exact>
             Game
@@ -53,7 +59,7 @@ const Nav = props => {
         <li>
           <MenuItem to="/Contact">Contact</MenuItem>
         </li>
-      </ul>
+      </ItemsList>
     </Menu>
   );
 };

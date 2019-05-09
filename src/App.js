@@ -12,7 +12,7 @@ height:100%;
 width:100%;
 background-color:#1E1E1E;
 padding:20px;
-padding-top:70px;
+padding-top:80px;
 
 `;
 
