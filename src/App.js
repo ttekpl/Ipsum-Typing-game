@@ -4,6 +4,7 @@ import Rules from "./pages/Rules";
 import Contact from "./pages/Contact";
 import Laderboards from "./pages/Laderboards";
 import Nav from "./layout/Nav";
+import Header from "./layout/Header";
 import Styled, { createGlobalStyle } from "styled-components";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -13,66 +14,13 @@ width:100%;
 background-color:#1E1E1E;
 padding:20px;
 padding-top:80px;
-
-`;
-
-const Header = Styled.header`
-position:absolute;
-top:0;
-left:0;
-height:60px;
-width:100%;
-background-color:#333333;
-`;
-
-const WrapHamburger = Styled.div`
-position:absolute;
-left:0;
-top:0;
-height:60px;
-width:60px;
-z-index:999;
-`;
-
-const HamburgerMenu = Styled.div`
-position:absolute;
-height:2px;
-width:40px;
-left:10px;
-top:50%;
-transform:translateY(-100%);
-background-color:#aaa;
-transition:.3s;
-${props =>
-  props.isActive
-    ? " background-color:rgba(170, 170, 170, 0);"
-    : " background-color:rgba(170, 170, 170, 1);"}
-
-&::after{
-  content:'';
+@media(min-width:1024px){
   position:absolute;
-  top:calc(-10px * 1.41);
-  left:0;
-  height:100%;
-  width:100%;
- transform-origin:0% center;
- transition:.3s;
- transform:${props => (props.isActive ? "rotate(45deg)" : "rotate(0)")};
- background-color:#aaa;
-}
-
-
-&::before{
-  content:'';
-  position:absolute;
-  transform-origin:0% center;
-  top:calc(10px * 1.41);
-  left:0;
-  height:100%;
-  width:100%;
- background-color:#aaa;
- transition:.3s;
- transform:${props => (props.isActive ? "rotate(-45deg)" : "rotate(0)")};
+  left:100px;
+  width:calc(100% - 100px);
+  padding:50px;
+  padding-top:110px;
+  overflow:hidden;
 }
 `;
 
@@ -91,6 +39,7 @@ div.App{
   height:100vh;
 width:100%;
 background-color:#1E1E1E;
+overflow:hidden;
 
 }
 `;
@@ -112,7 +61,18 @@ function App() {
 
   const [isMenuActive, setIsMenuActive] = useState(false);
 
+  const [isHamVisible, setIsHamVisivle] = useState(true);
+
   const refreshTxt = () => {
+    window.addEventListener("resize", () => {
+      console.log("resize");
+      if (window.innerWidth >= 1024) {
+        setIsHamVisivle(false);
+      } else {
+        setIsHamVisivle(true);
+      }
+    });
+
     const API = `https://baconipsum.com/api/?type=meat-and-filler&paras=5`;
     fetch(API)
       .then(response => {
@@ -194,11 +154,11 @@ function App() {
         className="App"
         // onClick={timer !== 0 ? () => setIsCounting(false) : null}
       >
-        <Header>
-          <WrapHamburger onClick={() => setIsMenuActive(!isMenuActive)}>
-            <HamburgerMenu isActive={isMenuActive} />
-          </WrapHamburger>
-        </Header>
+        <Header
+          isHamVisible={isHamVisible}
+          onClick={() => setIsMenuActive(!isMenuActive)}
+          isActive={isMenuActive}
+        />
         <Nav isActive={isMenuActive} />
         <Content>
           <Switch>
@@ -215,6 +175,9 @@ function App() {
                   timer={timer}
                   isValid={isValid}
                   isCompleted={isCompleted}
+                  isActive={isMenuActive}
+                  isHamVisible={isHamVisible}
+                  setIsHamVisivle={setIsHamVisivle}
                 />
               )}
             />

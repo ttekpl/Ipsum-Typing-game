@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Styled from "styled-components";
 
 const Txt = Styled.p`
@@ -12,6 +12,11 @@ const Txt = Styled.p`
   border:none;
   font-size:18px;
   color: #aaa;
+
+  @media(min-width:1024px){
+  margin-bottom:50px;
+
+}
 `;
 
 const Word = Styled.span`
@@ -58,11 +63,29 @@ justify-content:center;
 border:3px solid #333333;
 color:#aaa;
 outline:none;
+@media(min-width:1024px){
+  margin-top:0;
+  
+
+}
 `;
 
 const Stats = Styled.div`
 border-top:2px solid #333333;
 padding:20px;
+@media(min-width:1024px){
+  position:absolute;
+  top:60px;
+  height:calc(100vh - 60px);
+  right:0;
+  width:50%;
+  border-top:none;
+  border-left:2px solid #333333;
+  transition: transform .3s;
+  transform: ${props =>
+    props.isActive ? "translateX(0);" : "translateX(100%);"}
+
+}
 `;
 
 const StatH1 = Styled.h1`
@@ -74,49 +97,75 @@ color:#aaa;
 }
 `;
 
+const WrapTxtFields = Styled.section`
+@media(min-width:1024px){
+width:50%;
+display:flex;
+flex-direction:column;
+height:100%;
+padding-right:50px;
+
+
+/* height:calc(100vh - 60px); */
+}
+`;
+
 const GameField = props => {
   const userWords = props.value.split(" ");
   const wordsArray = props.txt.split(" ");
   const timeSeconds = Math.floor(props.timer / 1000);
   const timeMiliSeconds = props.timer % 1000;
 
+  useEffect(() => {
+    console.log(window.innerWidth);
+    if (window.innerWidth >= 1024) {
+      props.setIsHamVisivle(true);
+      console.log(window.innerWidth);
+      return () => props.setIsHamVisivle(false);
+    } else {
+      props.setIsHamVisivle(true);
+    }
+  }, [window.innerWidth]);
+
   return (
     <>
-      <Txt>
-        {wordsArray.map((word, index) => (
-          <>
-            <Word
-              data-text={word}
-              green={props.isValid[index]}
-              not={props.isValid[index] === undefined}
-            />
-            {!(index === wordsArray.length - 1) ? " " : "."}
-          </>
-        ))}
-      </Txt>
-      <Txt
-        as="textarea"
-        name=""
-        id=""
-        cols="30"
-        rows="10"
-        placeholder="When you start typing the time also starts"
-        onChange={props.isCompleted ? null : props.onChange}
-        value={props.value}
-      />
-      <Stats>
-        <StatH1>Stats</StatH1>
-        <StatH1>
-          time:
-          {!props.isCounting && props.isCompleted
-            ? `${timeSeconds},${timeMiliSeconds}s`
-            : props.isCounting
-            ? " is counting"
-            : null}
-        </StatH1>
-        <StatH1>words: {`${userWords.length} / ${wordsArray.length}`}</StatH1>
-      </Stats>
-      <AgainButton onClick={props.refreshTxt}>Again</AgainButton>
+      <WrapTxtFields>
+        <Txt>
+          {wordsArray.map((word, index) => (
+            <>
+              <Word
+                data-text={word}
+                green={props.isValid[index]}
+                not={props.isValid[index] === undefined}
+              />
+              {!(index === wordsArray.length - 1) ? " " : "."}
+            </>
+          ))}
+        </Txt>
+        <Txt
+          as="textarea"
+          name=""
+          id=""
+          cols="30"
+          rows="10"
+          placeholder="When you start typing the time also starts"
+          onChange={props.isCompleted ? null : props.onChange}
+          value={props.value}
+        />
+        <Stats isActive={props.isActive}>
+          <StatH1>Last game stats</StatH1>
+          <StatH1>
+            time:
+            {!props.isCounting && props.isCompleted
+              ? `${timeSeconds},${timeMiliSeconds}s`
+              : props.isCounting
+              ? " is counting"
+              : null}
+          </StatH1>
+          <StatH1>words: {`${userWords.length} / ${wordsArray.length}`}</StatH1>
+        </Stats>
+        <AgainButton onClick={props.refreshTxt}>Again</AgainButton>
+      </WrapTxtFields>
     </>
   );
 };

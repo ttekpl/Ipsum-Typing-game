@@ -13,6 +13,11 @@ left:0;
 transition:.3s ease-out;
 transform: ${props =>
   props.isActive ? "translateX(0)" : "translateX(-100% )"};
+
+  @media(min-width:1024px){
+    transform:none;
+    width:100px;
+  }
 `;
 
 const ItemsList = Styled.ul`
@@ -38,6 +43,9 @@ text-decoration:none;
 border-bottom:3px solid #333;
 outline:none;
 
+@media(min-width:1024px){
+   font-size:10px;
+  }
 `;
 
 const Nav = props => {
