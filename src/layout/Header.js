@@ -8,9 +8,12 @@ left:0;
 height:60px;
 width:100%;
 background-color:#333333;
-
+text-align:center;
+line-height:60px;
+font-size:20px;
 @media(min-width:1024px){
     z-index:1000;
+    font-size:30px;
   }
 
 `;
@@ -73,6 +76,7 @@ ${props =>
 const Header = props => {
   return (
     <WrapHeader>
+      Ipsum Typing game
       {props.isHamVisible ? (
         <WrapHamburger onClick={props.onClick}>
           <HamburgerMenu isActive={props.isActive} />

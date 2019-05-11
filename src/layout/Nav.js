@@ -36,15 +36,22 @@ height:50px;
 display:flex;
 justify-content:center;
 align-items:center;
-transition:.2s;
+transition:.3s;
 color:#aaa;
 text-transform:uppercase;
 text-decoration:none;
 border-bottom:3px solid #333;
 outline:none;
-
+&.active{
+     border-bottom:3px solid gray;
+   }
 @media(min-width:1024px){
    font-size:10px;
+   height:80px;
+   &:hover{
+    opacity:.7;
+   }
+
   }
 `;
 

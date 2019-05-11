@@ -53,9 +53,9 @@ outline:none;
 `;
 
 const AgainButton = Styled.button`
-width:100%;
+width:60%;
 background-color:#1E1E1E;
-margin-top:20px;
+margin:20px auto 0;
 padding:10px;
 font-size:25px;
 display:flex;
@@ -134,6 +134,7 @@ const GameField = props => {
           {wordsArray.map((word, index) => (
             <>
               <Word
+                key={index}
                 data-text={word}
                 green={props.isValid[index]}
                 not={props.isValid[index] === undefined}
